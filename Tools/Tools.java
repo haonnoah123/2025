@@ -80,4 +80,16 @@ public class Tools {
         }
     }
 
+    /**
+     * computes euclidean module since java's % operator will compute negative
+     * values
+     * 
+     * @param a
+     * @param b
+     * @return a (mod b)
+     */
+    public static int euclidean_modulo(int a, int b) {
+        return ((a % b) + b) % b;
+    }
+
 }
