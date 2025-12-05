@@ -33,24 +33,21 @@ class Day05 {
         ranges.sort((a, b) -> a.compareTo(b));
 
         // We want to compress the ranges which we can do by checking if the left we are
-        // considering adding is <= any of our new "compact ranges" and if it is we know
-        // since we sorted it we just replace that with the old compact left and the
-        // bigger of the two rights.
+        // considering adding is <= the last of our new "compact ranges" and if it is we
+        // know since we sorted it we just replace that with the old compact left and
+        // the bigger of the two rights. We only need to check the last becuase the new
+        // compactRange list will also be sorted
         List<Pair<Long, Long>> compactRanges = new ArrayList<>();
+        compactRanges.add(ranges.getFirst());
         for (Pair<Long, Long> range : ranges) {
-            boolean added = false;
-            for (int i = 0; i < compactRanges.size(); i++) {
-                Pair<Long, Long> compactRange = compactRanges.get(i);
-                if (range.getLeft() <= compactRange.getRight()) {
-                    compactRange = new Pair<Long, Long>(compactRange.getLeft(),
-                            Math.max(compactRange.getRight(), range.getRight()));
-                    compactRanges.set(i, compactRange);
-                    added = true;
-                    break;
-                }
-            }
-            if (!added)
+            Pair<Long, Long> compactRange = compactRanges.getLast();
+            if (range.getLeft() <= compactRange.getRight()) {
+                compactRange = new Pair<Long, Long>(compactRange.getLeft(),
+                        Math.max(compactRange.getRight(), range.getRight()));
+                compactRanges.set(compactRanges.size() - 1, compactRange);
+            } else {
                 compactRanges.add(range);
+            }
         }
 
         // Add up all the compact ranges (inclusive so add 1 to each)
