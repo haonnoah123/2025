@@ -29,6 +29,9 @@ class Day05 {
     }
 
     public static long partTwo(List<Pair<Long, Long>> ranges) {
+        // Add up all the compact ranges (inclusive so add 1 to each)
+        long count = 0;
+
         // First sort ranges
         ranges.sort((a, b) -> a.compareTo(b));
 
@@ -36,27 +39,21 @@ class Day05 {
         // considering adding is <= the last of our new "compact ranges" and if it is we
         // know since we sorted it we just replace that with the old compact left and
         // the bigger of the two rights. We only need to check the last becuase the new
-        // compactRange list will also be sorted
-        List<Pair<Long, Long>> compactRanges = new ArrayList<>();
-        compactRanges.add(ranges.getFirst());
+        // compactRange list will also be sorted.
+        Pair<Long, Long> compactRange = ranges.getFirst();
         for (Pair<Long, Long> range : ranges) {
-            Pair<Long, Long> compactRange = compactRanges.getLast();
+            // Pair<Long, Long> compactRange = compactRanges.getLast();
             if (range.getLeft() <= compactRange.getRight()) {
                 compactRange = new Pair<Long, Long>(compactRange.getLeft(),
                         Math.max(compactRange.getRight(), range.getRight()));
-                compactRanges.set(compactRanges.size() - 1, compactRange);
             } else {
-                compactRanges.add(range);
+                count += compactRange.getRight() - compactRange.getLeft() + 1;
+                compactRange = range;
             }
         }
 
-        // Add up all the compact ranges (inclusive so add 1 to each)
-        long count = 0;
-        for (Pair<Long, Long> range : compactRanges) {
-            count += range.getRight() - range.getLeft() + 1;
-        }
-
-        return count;
+        // Add final compact range
+        return count + compactRange.getRight() - compactRange.getLeft() + 1;
     }
 
     public static List<Pair<Long, Long>> getRanges(List<String> input) {
