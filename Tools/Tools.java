@@ -66,6 +66,15 @@ public class Tools {
         }
     }
 
+    public static void print2DArray(long[][] input) {
+        for (long[] line : input) {
+            for (long c : line) {
+                System.out.print(c + "\t");
+            }
+            System.out.println();
+        }
+    }
+
     /**
      * print int 2D array
      * 
